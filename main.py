@@ -1,3 +1,5 @@
+from automat import pep614
+
 test_equation = "t * t * t + t * t + 3 * t + 2 * t"
 
 # Simplify a written-out equation into something simpler
@@ -39,4 +41,14 @@ def simplify_equation(equation: str, variable: str = "t") -> str:
                 equation = variable + " * " + equation
     return equation
 
-print(simplify_equation(test_equation))
+# Quadratic Bézier curve (one-dimensional) equation function
+def quad_bezier(p0: float, p1: float, p2: float) -> str:
+    if p0 == p1:
+        if p1 == p2:
+            return str(p1)
+        return str(p0) + " + t * t * (" + str(p2) + " - " + str(p0) + ")"
+    if p2 == p1:
+        return str(p2) + " + (1 - t) * (1 - t) * (" + str(p0) + " - " + str(p2) + ")"
+    return str(p1) + " + (1 - t) * (1 - t) * (" + str(p0) + " - " + str(p1) + ") + t * t * (" + str(p2) + " - " + str(p1) + ")"
+
+print(quad_bezier(1, 2, 3))
