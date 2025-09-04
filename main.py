@@ -1,5 +1,6 @@
 test_equation = ("x * x * x + x * x + 3 * x + 2 * x")
 
+# Simplify a written-out equation into something simpler
 def simplify_equation(equation: str) -> str:
     split_add = equation.split("+")
 
