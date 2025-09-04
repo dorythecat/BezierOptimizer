@@ -60,4 +60,7 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
         return str(p1) + p0[:-3] + "((1 - t) * (1 - t) + t * t)"
     return str(p1) + p0 + "(1 - t) * (1 - t)" + p2 + "t * t"
 
-print(quad_bezier(1, 3, 5))
+def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
+    return "(1 - t) * (" + quad_bezier(p0, p1, p2) + ") + t * (" + quad_bezier(p1, p2, p3) + ")"
+
+print(cubic_bezier(1, 3, 5, 7))
