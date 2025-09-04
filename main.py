@@ -1,4 +1,4 @@
-test_equation = "x * x * x + x * x + x"
+test_equation = "x * x * x + x * x + 3 * x"
 
 def simplify_equation(equation: str) -> str:
     split_add = equation.split("+")
@@ -12,8 +12,10 @@ def simplify_equation(equation: str) -> str:
         split_add[i] = add.strip()
     if least_x_content > 0:
         for i in range(len(split_add)):
-            if split_add[i].strip() == "x":
-                split_add[i] = "1"
+            if split_add[i].strip().count("x * x") == 0:
+                split_add[i] = split_add[i].replace("x", "").replace("*", "").strip()
+                if split_add[i] == "":
+                    split_add[i] = "1"
                 continue
             split_add[i] = split_add[i].replace("x * ", "", least_x_content).strip()
     equation = " + ".join(split_add)
