@@ -20,4 +20,4 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
 def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
     return "(1 - t) * (" + quad_bezier(p0, p1, p2) + ") + t * (" + quad_bezier(p1, p2, p3) + ")"
 
-print(cubic_bezier(1, 3, 5, 7))
+# TODO: Implement more than 4-point curves, if possible, n-point curves
