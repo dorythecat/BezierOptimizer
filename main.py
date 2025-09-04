@@ -43,20 +43,20 @@ def simplify_equation(equation: str, variable: str = "t") -> str:
 
 # Quadratic Bézier curve (one-dimensional) equation function
 def quad_bezier(p0: float, p1: float, p2: float) -> str:
-    p2p1 = p2 - p1
-    p2p1n = p2p1 < 0 # is it negative?
-    p2p1 *= -1 if p2p1n else 1 # Make it positive
-    p2p1 = (" - " if p2p1n else " + ") + ("" if p2p1 == 1 else (str(p2p1) + " * ")) # Turn to string
+    p2 = p2 - p1
+    p2n = p2 < 0 # is it negative?
+    p2 *= -1 if p2n else 1 # Make it positive
+    p2 = (" - " if p2n else " + ") + ("" if p2 == 1 else (str(p2) + " * ")) # Turn to string
     if p0 == p1:
-        return str(p1) + ("" if p2p1 == 0 else (p2p1 +  "t * t"))
-    p0p1 = p0 - p1
-    p0p1n = p0p1 < 0 # is it negative?
-    p0p1 *= -1 if p0p1n else 1 # Make it positive
-    p0p1 = (" - " if p0p1n else " + ") + ("" if p0p1 == 1 else (str(p0p1) + " * ")) # Turn to string
-    if p2p1 == 0:
-        return str(p1) + p0p1 + "(1 - t) * (1 - t)"
-    if p0p1[3:] == p2p1[3:]: # Ignore signs
-        return str(p1) + p0p1[:-3] + "((1 - t) * (1 - t) + t * t)"
-    return str(p1) + p0p1 + "(1 - t) * (1 - t)" + p2p1 + "t * t"
+        return str(p1) + ("" if p2 == 0 else (p2 +  "t * t"))
+    p0 = p0 - p1
+    p0n = p0 < 0 # is it negative?
+    p0 *= -1 if p0n else 1 # Make it positive
+    p0 = (" - " if p0n else " + ") + ("" if p0 == 1 else (str(p0) + " * ")) # Turn to string
+    if p2 == 0:
+        return str(p1) + p0 + "(1 - t) * (1 - t)"
+    if p0[3:] == p2[3:]: # Ignore signs
+        return str(p1) + p0[:-3] + "((1 - t) * (1 - t) + t * t)"
+    return str(p1) + p0 + "(1 - t) * (1 - t)" + p2 + "t * t"
 
 print(quad_bezier(1, 3, 5))
