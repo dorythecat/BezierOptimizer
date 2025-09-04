@@ -12,11 +12,10 @@ def simplify_equation(equation: str) -> str:
         split_add[i] = add.strip()
     if least_x_content > 0:
         for i in range(len(split_add)):
-            split_add[i] = split_add[i].replace("x", "", least_x_content)
-            if split_add[i].startswith(" * "):
-                split_add[i] = split_add[i][3:]
-            if split_add[i] == "":
+            if split_add[i].strip() == "x":
                 split_add[i] = "1"
+                continue
+            split_add[i] = split_add[i].replace("x * ", "", least_x_content).strip()
     equation = " + ".join(split_add)
     if least_x_content > 0:
         for i in range(least_x_content):
