@@ -1,5 +1,8 @@
 import sys
 
+from fontTools.misc.cython import returns
+
+
 # Quadratic Bézier curve (one-dimensional) equation function
 def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p2 = p2 - p1
@@ -66,26 +69,23 @@ if __name__ == "__main__":
     OUTPUT_TYPE = 0 # Type of output (see the help message)
     COMPRESS = False  # Whether to compress the output
 
-    points = []
-    for i in range(len(args)):
-        match args[i]:
-            case "-o" | "--output":
-                try:
-                    OUTPUT_TYPE = int(args[i + 1])
-                    args[i + 1] = ""
-                except IndexError:
-                    print("Error: Missing output type")
-                continue
-            case "-c" | "--compress":
-                COMPRESS = True
-                continue
-        if args[i] == "":
-            continue
-        if args[i][0] == "-":
-            print("Invalid option: " + args[i])
-            continue
-        points.append(float(args[i]))
-    if len(points) < 1:
+    if "-o" in args or "--output" in args:
+        i = args.index("-o") if "-o" in args else args.index("--output")
+        try:
+            OUTPUT_TYPE = int(args[i + 1])
+            args = args[:i] + args[i + 2:]
+        except IndexError:
+            print("Error: Missing output type")
+            exit()
+    if OUTPUT_TYPE not in [0, 1, 2]:
+        print("Error: Invalid output type")
+        exit()
+
+    if "-c" in args or "--compress" in args:
+        COMPRESS = True
+        del args[args.index("-c") if "-c" in args else args.index("--compress")]
+
+    if len(args) < 1:
         print("Error: No points provided")
         exit()
 
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     m_off = 3 if OUTPUT_TYPE in [0, 1] else 2  # offset of multiplication sign
     power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2")  # power (of two) sign
 
-    output = n_bezier(points).replace(".0 ", " ").replace(".0(", "(")
+    output = n_bezier([float(arg) for arg in args]).replace(".0 ", " ").replace(".0(", "(")
     print(compress(output) if COMPRESS else output)
