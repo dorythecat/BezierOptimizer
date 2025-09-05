@@ -35,18 +35,17 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
 
 def n_bezier(points: list[float]) -> str:
     match len(points):
-        case 1:
+        case 1: # Constant
             return str(points[0])
-        case 2:
+        case 2: # Linear interpolation
             p0 = points[0]
             p0 = ("" if p0 == 0 else (("" if p0 == 1 else ("-" if p0 == -1 else str(p0))) + "(1 - t)"))
             p1 = points[1]
             p1 = ("" if p1 == 0 else (("" if p1 == 1 else ("-" if p1 == -1 else str(p1))) + "t"))
             return p0 + ("" if p0 == "" or p1 == "" else " + ") + p1
-        case 3:
+        case 3: # Quadratic Bézier curve
             return quad_bezier(*points)
-        case _:
-            # Use the recursive definition
+        case _: # Use the recursive definition of a Bézier curve for higher-order curves
             b1 = n_bezier(points[:-1])
             b1 = ("" if b1 == "" else ("(1 - t)" + mul + "(" + b1 + ")"))
             b2 = n_bezier(points[1:])
