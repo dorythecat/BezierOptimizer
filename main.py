@@ -50,20 +50,17 @@ def compress(equation: str) -> str:
     equation = mul.strip().join(equation.split(mul))
     return equation
 
-def help_option():
-    print("Usage: python main.py [OPTIONS] [POINTS]")
-    print("Possible options:")
-    print("  -h, --help     Display this help message")
-    print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
-    print("  -c, --compress Compress the output")
-    print("Example: python main.py -o 2 -c 1 3 5 7 9")
-    print("This example will generate a compressed MatLab equation for the points 1, 3, 5, 7, and 9.")
-    exit()
-
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if len(args) == 0:
-        help_option()
+    if len(args) == 0 or "-h" in args or "--help" in args:
+        print("Usage: python main.py [OPTIONS] [POINTS]")
+        print("Possible options:")
+        print("  -h, --help     Display this help message")
+        print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
+        print("  -c, --compress Compress the output")
+        print("Example: python main.py -o 2 -c 1 3 5 7 9")
+        print("This example will generate a compressed MatLab equation for the points 1, 3, 5, 7, and 9.")
+        exit()
 
     # DEFAULT SETTINGS
     OUTPUT_TYPE = 0 # Type of output (see the help message)
@@ -72,8 +69,6 @@ if __name__ == "__main__":
     points = []
     for i in range(len(args)):
         match args[i]:
-            case "-h" | "--help":
-                help_option()
             case "-o" | "--output":
                 try:
                     OUTPUT_TYPE = int(args[i + 1])
