@@ -4,8 +4,9 @@
 # 2 = MatLab equation
 OUTPUT_TYPE = 0
 
-mul = " * " if OUTPUT_TYPE in [0, 1] else ".*"
-power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2")
+mul = " * " if OUTPUT_TYPE in [0, 1] else ".*" # multiplication sign
+m_off = 3 if OUTPUT_TYPE in [0, 1] else 2 # offset of multiplication sign
+power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2") # power (of two) sign
 
 # Quadratic Bézier curve (one-dimensional) equation function
 def quad_bezier(p0: float, p1: float, p2: float) -> str:
@@ -14,7 +15,7 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p2 *= -1 if p2n else 1 # Make it positive
     p2 = (" - " if p2n else " + ") + ("" if p2 == 1 else (str(p2) + mul)) # Turn to string
     if p0 == p1:
-        output = ("" if p1 == 0 else str(p1)) + ("" if p2[3:-3] == "0" else (p2 + "t" + power))
+        output = ("" if p1 == 0 else str(p1)) + ("" if p2[3:-m_off] == "0" else (p2 + "t" + power))
         return "" if output == "0" else output
     # Same steps as above
     p0 = p0 - p1
@@ -23,14 +24,14 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p0 = (" - " if p0n else " + ") + ("" if p0 == 1 else (str(p0) + mul))
 
     p1 = ("" if p1 == 0 else str(p1)) # Convert to string
-    if p2[3:-3] == "0":
+    if p2[3:-m_off] == "0":
         return p1 + p0 + "(1 - t)" + power
     if p0[3:] == p2[3:]: # Ignore signs
         if p1 == "":
             return ""
-        return ("" if p1 == "1" else ("-" if p1 == "-1" else p1)) + p0[:-3] + "((1 - t)" + power + " + t" + power + ")"
+        return ("" if p1 == "1" else ("-" if p1 == "-1" else p1)) + p0[:-m_off] + "((1 - t)" + power + " + t" + power + ")"
     p0 = ((("- " if p0 == " - " else "") + "1") if p0 in [" + ", " - "] and p1 == "" else (p0 + "(1 - t)" + power))
-    return p1 + p0 + ("" if p2[3:-3] == "0" else (p2 + "t" + power))
+    return p1 + p0 + ("" if p2[3:-m_off] == "0" else (p2 + "t" + power))
 
 def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
     b1 = quad_bezier(p0, p1, p2) # Precalculate curve
