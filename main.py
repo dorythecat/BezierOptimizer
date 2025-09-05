@@ -14,10 +14,14 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     if p2 == 0:
         return str(p1) + p0 + "(1 - t)²"
     if p0[3:] == p2[3:]: # Ignore signs
+        if p1 == 0:
+            return ""
         return str(p1) + p0[:-3] + "((1 - t)² + t²)"
     return str(p1) + p0 + "(1 - t)²" + p2 + "t²"
 
 def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
-    return "(1 - t) * (" + quad_bezier(p0, p1, p2) + ") + t * (" + quad_bezier(p1, p2, p3) + ")"
+    bezier1 = quad_bezier(p0, p1, p2)
+    bezier2 = quad_bezier(p1, p2, p3)
+    return ("" if bezier1 == "" else ("(1 - t) * " + "(" + bezier1 + ") + ")) + ("" if bezier2 == "" else ("t * (" + bezier2 + ")"))
 
-# TODO: Implement more than 4-point curves, if possible, n-point curves
+print(cubic_bezier(1, 0, -1, 0))
