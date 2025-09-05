@@ -1,16 +1,5 @@
 import sys
 
-# The type of string to spit out
-# 0 = Human-readable equation
-# 1 = Python equation
-# 2 = MatLab equation
-OUTPUT_TYPE = 0
-COMPRESS = False # Whether to compress the output
-
-mul = " * " if OUTPUT_TYPE in [0, 1] else ".*" # multiplication sign
-m_off = 3 if OUTPUT_TYPE in [0, 1] else 2 # offset of multiplication sign
-power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2") # power (of two) sign
-
 # Quadratic Bézier curve (one-dimensional) equation function
 def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p2 = p2 - p1
@@ -70,6 +59,11 @@ if __name__ == "__main__":
         print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
         print("  -c, --compress Compress the output")
         exit()
+
+    # DEFAULT SETTINGS
+    OUTPUT_TYPE = 0 # Type of output (see the help message)
+    COMPRESS = False  # Whether to compress the output
+
     points = []
     for i in range(len(args)):
         match args[i]:
@@ -83,6 +77,7 @@ if __name__ == "__main__":
             case "-o" | "--output":
                 try:
                     OUTPUT_TYPE = int(args[i + 1])
+                    args[i + 1] = ""
                 except IndexError:
                     print("Error: Missing output type")
                 continue
@@ -90,6 +85,8 @@ if __name__ == "__main__":
                 COMPRESS = True
                 continue
         print(args[i])
+        if args[i] == "":
+            continue
         if args[i][0] == "-":
             print("Invalid option: " + args[i])
             continue
@@ -97,5 +94,11 @@ if __name__ == "__main__":
     if len(points) < 1:
         print("Error: No points provided")
         exit()
+
+    # Settings stuff
+    mul = " * " if OUTPUT_TYPE in [0, 1] else ".*"  # multiplication sign
+    m_off = 3 if OUTPUT_TYPE in [0, 1] else 2  # offset of multiplication sign
+    power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2")  # power (of two) sign
+
     output = n_bezier(points).replace(".0 ", " ").replace(".0(", "(")
     print(compress(output) if COMPRESS else output)
