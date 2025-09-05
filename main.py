@@ -84,7 +84,6 @@ if __name__ == "__main__":
             case "-c" | "--compress":
                 COMPRESS = True
                 continue
-        print(args[i])
         if args[i] == "":
             continue
         if args[i][0] == "-":
