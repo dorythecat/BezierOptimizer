@@ -61,13 +61,15 @@ if __name__ == "__main__":
         print("  -h, --help     Display this help message")
         print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
         print("  -c, --compress Compress the output")
+        print("  -v, --verbose  Verbose output (useful for debugging)")
         print("Example: python main.py -o 2 -c 1 3 5 7 9")
         print("This example will generate a compressed MatLab equation for the points 1, 3, 5, 7, and 9.")
         exit()
 
     # DEFAULT SETTINGS
     OUTPUT_TYPE = 0 # Type of output (see the help message)
-    COMPRESS = False  # Whether to compress the output
+    COMPRESS = False  # Output compression
+    VERBOSE = False # Verbose output
 
     if "-o" in args or "--output" in args:
         i = args.index("-o") if "-o" in args else args.index("--output")
@@ -84,6 +86,10 @@ if __name__ == "__main__":
     if "-c" in args or "--compress" in args:
         COMPRESS = True
         del args[args.index("-c") if "-c" in args else args.index("--compress")]
+
+    if "-v" in args or "--verbose" in args:
+        VERBOSE = True
+        del args[args.index("-v") if "-v" in args else args.index("--verbose")]
 
     if len(args) < 1:
         print("Error: No points provided")
