@@ -46,6 +46,7 @@ def n_bezier(points: list[float]) -> str:
         case 3:
             return quad_bezier(*points)
         case _:
+            # Use the recursive definition
             b1 = n_bezier(points[:-1])
             b1 = ("" if b1 == "" else ("(1 - t)" + mul + "(" + b1 + ")"))
             b2 = n_bezier(points[1:])
