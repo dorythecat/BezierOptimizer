@@ -1,8 +1,11 @@
+import sys
+
 # The type of string to spit out
 # 0 = Human-readable equation
 # 1 = Python equation
 # 2 = MatLab equation
-OUTPUT_TYPE = 2
+OUTPUT_TYPE = 0
+COMPRESS = False # Wether to compress the output
 
 mul = " * " if OUTPUT_TYPE in [0, 1] else ".*" # multiplication sign
 m_off = 3 if OUTPUT_TYPE in [0, 1] else 2 # offset of multiplication sign
@@ -57,3 +60,46 @@ def compress(equation: str) -> str:
     equation = "-".join(equation.split(" - "))
     equation = mul.strip().join(equation.split(mul))
     return equation
+
+def main():
+    global OUTPUT_TYPE, COMPRESS
+    args = sys.argv[1:]
+    if len(args) == 0:
+        print("Usage: python main.py [OPTIONS] [POINTS]")
+        print("Possible options:")
+        print("  -h, --help     Display this help message")
+        print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
+        print("  -c, --compress Compress the output")
+        return
+    points = []
+    for i in range(len(args)):
+        match args[i]:
+            case "-h" | "--help":
+                print("Usage: python main.py [OPTIONS] [POINTS]")
+                print("Possible options:")
+                print("  -h, --help     Display this help message")
+                print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
+                print("  -c, --compress Compress the output")
+                return
+            case "-o" | "--output":
+                try:
+                    OUTPUT_TYPE = int(args[i + 1])
+                except IndexError:
+                    print("Error: Missing output type")
+                continue
+            case "-c" | "--compress":
+                COMPRESS = True
+                continue
+        print(args[i])
+        if args[i][0] == "-":
+            print("Invalid option: " + args[i])
+            continue
+        points.append(float(args[i]))
+    if len(points) < 1:
+        print("Error: No points provided")
+        return
+    output = n_bezier(points)
+    print(compress(output) if COMPRESS else output)
+
+if __name__ == "__main__":
+    main()
