@@ -12,7 +12,7 @@ power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2") # p
 def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p2 = p2 - p1
     p2n = p2 < 0 # is it negative?
-    p2 *= -1 if p2n else 1 # Make it positive
+    p2 *= 1 - p2n * 2 # Make it positive
     p2 = (" - " if p2n else " + ") + ("" if p2 == 1 else (str(p2) + mul)) # Turn to string
     if p0 == p1:
         output = ("" if p1 == 0 else str(p1)) + ("" if p2[3:-m_off] == "0" else (p2 + "t" + power))
@@ -20,7 +20,7 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     # Same steps as above
     p0 = p0 - p1
     p0n = p0 < 0
-    p0 *= -1 if p0n else 1
+    p0 *= 1 - p0n * 2
     p0 = (" - " if p0n else " + ") + ("" if p0 == 1 else (str(p0) + mul))
 
     p1 = ("" if p1 == 0 else str(p1)) # Convert to string
