@@ -96,7 +96,7 @@ if __name__ == "__main__":
         exit()
 
     # Settings stuff
-    mul = " * " if OUTPUT_TYPE in [0, 1] else ".*"  # multiplication sign
+    mul = " · " if OUTPUT_TYPE == 0 else (" * " if OUTPUT_TYPE == 1 else ".*")  # multiplication sign
     m_off = 3 if OUTPUT_TYPE in [0, 1] else 2  # offset of multiplication sign
     power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2")  # power (of two) sign
 
