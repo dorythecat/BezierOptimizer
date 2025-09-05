@@ -46,9 +46,11 @@ def n_bezier(points: list[float]) -> str:
         case 1:
             return str(points[0])
         case 2:
-            sp = sum(points)
-            p0 = ("" if points[0] == 0 else (str(points[0]) + " + "))
-            return p0 + ("" if sp == 0 else (("" if sp == 1 else ("-" if sp == -1 else str(sp))) + mul + "t"))
+            p0 = points[0]
+            p0 = ("" if p0 == 0 else (("" if p0 == 1 else ("-" if p0 == -1 else str(p0))) + "(1 - t)"))
+            p1 = points[1]
+            p1 = ("" if p1 == 0 else (("" if p1 == 1 else ("-" if p1 == -1 else str(p1))) + "t"))
+            return p0 + ("" if p0 == "" or p1 == "" else " + ") + p1
         case 3:
             return quad_bezier(*points)
         case 4:
