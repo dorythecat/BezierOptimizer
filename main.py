@@ -28,7 +28,7 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p0 = ((("- " if p0 == " - " else "") + "1") if p0 in [" + ", " - "] and p1 == "" else (p0 + "(1 - t)" + power))
     return p1 + p0 + ("" if p2[3:-m_off] == "0" else (p2 + "t" + power))
 
-def n_bezier(points: list[float]) -> str:
+def n_bezier(points: list[float], verbose: bool) -> str:
     match len(points):
         case 1: # Constant
             return str(points[0])
@@ -39,12 +39,19 @@ def n_bezier(points: list[float]) -> str:
             p1 = ("" if p1 == 0 else (("" if p1 == 1 else ("-" if p1 == -1 else str(p1))) + "t"))
             return p0 + ("" if p0 == "" or p1 == "" else " + ") + p1
         case 3: # Quadratic Bézier curve
-            return quad_bezier(*points)
+            bezier = quad_bezier(*points)
+            if verbose:
+                print("Quadratic Bézier curve: " + bezier.replace(".0 ", " ").replace(".0(", "("))
+            return bezier
         case _: # Use the recursive definition of a Bézier curve for higher-order curves
-            b1 = n_bezier(points[:-1])
+            b1 = n_bezier(points[:-1], verbose)
             b1 = ("" if b1 == "" else ("(1 - t)" + mul + "(" + b1 + ")"))
-            b2 = n_bezier(points[1:])
+            b2 = n_bezier(points[1:], verbose)
             b2 = ("" if b2 == "" else ("t" + mul + "(" + b2 + ")"))
+            if verbose:
+                pl = "Cubic" if len(points) == 4 else (str(len(points)) + "-order")
+                print(pl + " Bézier curve: " + b1.replace(".0 ", " ").replace(".0(", "("))
+                print(pl + " Bézier curve: " + b2.replace(".0 ", " ").replace(".0(", "("))
             return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
 
 def compress(equation: str) -> str:
@@ -100,5 +107,13 @@ if __name__ == "__main__":
     m_off = 3 if OUTPUT_TYPE in [0, 1] else 2  # offset of multiplication sign
     power = "²" if OUTPUT_TYPE == 0 else ("**2" if OUTPUT_TYPE == 1 else ".^2")  # power (of two) sign
 
-    output = n_bezier([float(arg) for arg in args]).replace(".0 ", " ").replace(".0(", "(")
+    if VERBOSE:
+        print("--- VERBOSE MODE ACTIVE ---")
+        print("Points:", args)
+        print("Output type:", OUTPUT_TYPE)
+        print("Compression:", COMPRESS)
+        print("")
+    output = n_bezier([float(arg) for arg in args], VERBOSE).replace(".0 ", " ").replace(".0(", "(")
+    if VERBOSE:
+        print("--- END OF VERBOSE SECTION ---")
     print(compress(output) if COMPRESS else output)
