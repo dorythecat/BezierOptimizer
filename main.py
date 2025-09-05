@@ -56,8 +56,6 @@ def n_bezier(points: list[float]) -> str:
             return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
 
 def compress(equation: str) -> str:
-    equation = equation.replace(".0 ", " ")
-    equation = equation.replace(".0(", "(")
     equation = "+".join(equation.split(" + "))
     equation = "-".join(equation.split(" - "))
     equation = mul.strip().join(equation.split(mul))
@@ -100,7 +98,7 @@ def main():
     if len(points) < 1:
         print("Error: No points provided")
         return
-    output = n_bezier(points)
+    output = n_bezier(points).replace(".0 ", " ").replace(".0(", "(")
     print(compress(output) if COMPRESS else output)
 
 if __name__ == "__main__":
