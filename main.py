@@ -20,8 +20,8 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     return str(p1) + p0 + "(1 - t)²" + p2 + "t²"
 
 def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
-    bezier1 = quad_bezier(p0, p1, p2)
-    bezier2 = quad_bezier(p1, p2, p3)
-    return ("" if bezier1 == "" else ("(1 - t) * " + "(" + bezier1 + ") + ")) + ("" if bezier2 == "" else ("t * (" + bezier2 + ")"))
+    b1 = quad_bezier(p0, p1, p2)
+    b2 = quad_bezier(p1, p2, p3)
+    return ("" if b1 == "" else ("(1 - t) * " + "(" + b1 + ") + ")) + ("" if b2 == "" else ("t * (" + b2 + ")"))
 
 print(cubic_bezier(1, 0, -1, 0))
