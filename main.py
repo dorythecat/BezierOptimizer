@@ -5,7 +5,7 @@ import sys
 # 1 = Python equation
 # 2 = MatLab equation
 OUTPUT_TYPE = 0
-COMPRESS = False # Wether to compress the output
+COMPRESS = False # Whether to compress the output
 
 mul = " * " if OUTPUT_TYPE in [0, 1] else ".*" # multiplication sign
 m_off = 3 if OUTPUT_TYPE in [0, 1] else 2 # offset of multiplication sign
@@ -61,8 +61,7 @@ def compress(equation: str) -> str:
     equation = mul.strip().join(equation.split(mul))
     return equation
 
-def main():
-    global OUTPUT_TYPE, COMPRESS
+if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) == 0:
         print("Usage: python main.py [OPTIONS] [POINTS]")
@@ -70,7 +69,7 @@ def main():
         print("  -h, --help     Display this help message")
         print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
         print("  -c, --compress Compress the output")
-        return
+        exit()
     points = []
     for i in range(len(args)):
         match args[i]:
@@ -80,7 +79,7 @@ def main():
                 print("  -h, --help     Display this help message")
                 print("  -o, --output   Output type (0 = human-readable, 1 = Python, 2 = MatLab)")
                 print("  -c, --compress Compress the output")
-                return
+                exit()
             case "-o" | "--output":
                 try:
                     OUTPUT_TYPE = int(args[i + 1])
@@ -97,9 +96,6 @@ def main():
         points.append(float(args[i]))
     if len(points) < 1:
         print("Error: No points provided")
-        return
+        exit()
     output = n_bezier(points).replace(".0 ", " ").replace(".0(", "(")
     print(compress(output) if COMPRESS else output)
-
-if __name__ == "__main__":
-    main()
