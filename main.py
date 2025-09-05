@@ -33,14 +33,6 @@ def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p0 = ((("- " if p0 == " - " else "") + "1") if p0 in [" + ", " - "] and p1 == "" else (p0 + "(1 - t)" + power))
     return p1 + p0 + ("" if p2[3:-m_off] == "0" else (p2 + "t" + power))
 
-def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
-    b1 = quad_bezier(p0, p1, p2) # Precalculate curve
-    b1 = ("" if b1 == "" else ("(1 - t)" + mul + "(" + b1 + ")")) # Turn to string
-    # Same as above
-    b2 = quad_bezier(p1, p2, p3)
-    b2 = ("" if b2 == "" else ("t" + mul + "(" + b2 + ")"))
-    return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
-
 def n_bezier(points: list[float]) -> str:
     match len(points):
         case 1:
@@ -53,8 +45,6 @@ def n_bezier(points: list[float]) -> str:
             return p0 + ("" if p0 == "" or p1 == "" else " + ") + p1
         case 3:
             return quad_bezier(*points)
-        case 4:
-            return cubic_bezier(*points)
         case _:
             b1 = n_bezier(points[:-1])
             b1 = ("" if b1 == "" else ("(1 - t)" + mul + "(" + b1 + ")"))
