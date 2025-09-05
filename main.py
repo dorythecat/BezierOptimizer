@@ -30,3 +30,22 @@ def cubic_bezier(p0: float, p1: float, p2: float, p3: float) -> str:
     b2 = quad_bezier(p1, p2, p3)
     b2 = ("" if b2 == "" else ("t * (" + b2 + ")"))
     return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
+
+def n_bezier(points: list[float]) -> str:
+    match len(points):
+        case 1:
+            return str(points[0])
+        case 2:
+            sp = sum(points)
+            p0 = ("" if points[0] == 0 else (str(points[0]) + " + "))
+            return p0 + ("" if sp == 0 else (("" if sp == 1 else ("-" if sp == -1 else str(sp))) + " * t"))
+        case 3:
+            return quad_bezier(*points)
+        case 4:
+            return cubic_bezier(*points)
+        case _:
+            b1 = n_bezier(points[:-1])
+            b1 = ("" if b1 == "" else ("(1 - t) * " + "(" + b1 + ")"))
+            b2 = n_bezier(points[1:])
+            b2 = ("" if b2 == "" else ("t * (" + b2 + ")"))
+            return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
