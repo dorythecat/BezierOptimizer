@@ -1,8 +1,5 @@
 import sys
 
-from fontTools.misc.cython import returns
-
-
 # Quadratic Bézier curve (one-dimensional) equation function
 def quad_bezier(p0: float, p1: float, p2: float) -> str:
     p2 = p2 - p1
@@ -53,12 +50,6 @@ def n_bezier(points: list[float], verbose: bool) -> str:
                 print(pl + " Bézier curve: " + b1.replace(".0 ", " ").replace(".0(", "("))
                 print(pl + " Bézier curve: " + b2.replace(".0 ", " ").replace(".0(", "("))
             return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
-
-def compress(equation: str) -> str:
-    equation = "+".join(equation.split(" + "))
-    equation = "-".join(equation.split(" - "))
-    equation = mul.strip().join(equation.split(mul))
-    return equation
 
 if __name__ == "__main__":
     args = sys.argv[1:]
@@ -116,4 +107,5 @@ if __name__ == "__main__":
     output = n_bezier([float(arg) for arg in args], VERBOSE).replace(".0 ", " ").replace(".0(", "(")
     if VERBOSE:
         print("--- END OF VERBOSE SECTION ---")
-    print(compress(output) if COMPRESS else output)
+    # Compress output if needed
+    print(mul.strip().join("-".join("+".join(output.split(" + ")).split(" - ")).split(mul)) if COMPRESS else output)
