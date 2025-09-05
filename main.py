@@ -2,7 +2,7 @@
 # 0 = Human-readable equation
 # 1 = Python equation
 # 2 = MatLab equation
-OUTPUT_TYPE = 0
+OUTPUT_TYPE = 2
 
 mul = " * " if OUTPUT_TYPE in [0, 1] else ".*" # multiplication sign
 m_off = 3 if OUTPUT_TYPE in [0, 1] else 2 # offset of multiplication sign
@@ -51,3 +51,9 @@ def n_bezier(points: list[float]) -> str:
             b2 = n_bezier(points[1:])
             b2 = ("" if b2 == "" else ("t" + mul + "(" + b2 + ")"))
             return b1 + ("" if b1 == "" or b2 == "" else " + ") + b2
+
+def compress(equation: str) -> str:
+    equation = "+".join(equation.split(" + "))
+    equation = "-".join(equation.split(" - "))
+    equation = mul.strip().join(equation.split(mul))
+    return equation
