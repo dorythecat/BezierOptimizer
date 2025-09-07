@@ -13,3 +13,6 @@ pretty easy (I think) to modify, to add new output modes tbh.
 This program is designed to be used as a command line tool. To use it follow the instructions you will get when you
 run the program with no arguments, or the `-h` or `--help` flags. Aka, to see hwo to use the program, just run
 `python main.py`, `python main.py -h` or `python main.py --help`. It's that easy. :D
+
+Example command output:
+![Example command output](https://hc-cdn.hel1.your-objectstorage.com/s/v3/200721e06c2c9c8d4b44eae58df44870cc358a70_captura_de_pantalla_2025-09-07_164023.png)
